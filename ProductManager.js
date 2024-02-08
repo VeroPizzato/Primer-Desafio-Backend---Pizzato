@@ -1,19 +1,19 @@
 class ProductManager {
 
     #products
-    static #ultimoIdEvento = 1
+    static #ultimoIdProducto = 1
 
     constructor() {
         this.#products = [];
     };
 
-     getProducts = () => {
+    getProducts = () => {
         return this.#products;
     }
 
     #getNuevoId() {
-        const id = ProductManager.#ultimoIdEvento
-        ProductManager.#ultimoIdEvento++
+        const id = ProductManager.#ultimoIdProducto
+        ProductManager.#ultimoIdProducto++
         return id
     }
     
@@ -26,8 +26,12 @@ class ProductManager {
         }
     }
 
+    #soloNumYletras = (code) => {
+        return (/^[a-z A-Z 0-9]+$/.test(code))
+    }
+
     addProduct = (title, description, price, thumbnail, code, stock) => {
-        const producto = {
+        const product = {
             id: this.#getNuevoId(),
             title,
             description,
@@ -36,34 +40,34 @@ class ProductManager {
             code,
             stock
         }
-              
-        if (title === "") {
-            console.error("Error. El campo titulo no tiene informacion.");
+                
+        if (title.trim().length === 0) {
+            console.error("Error. El campo titulo es invalido.");
             return;
         }
 
-        if (description === "") {
-            console.error("Error. El campo descripción no tiene informacion.");
+        if (description.trim().length === 0) {
+            console.error("Error. El campo descripción es invalido.");
             return;
         }
 
-        if (price === "") {
-            console.error("Error. El campo precio no tiene informacion.");
+        if (isNaN(price)) {
+            console.error("Error. El campo precio es invalido.");
             return;
         }
 
-        if (thumbnail === "") {
-            console.error("Error. El campo ruta de imagen no tiene informacion.");
+        if (thumbnail.trim().length === 0) {
+            console.error("Error. El campo ruta de imagen es invalido.");
             return;
         }
 
-        if (stock === "") {
-            console.error("Error. El campo stock no tiene informacion.");
+        if (isNaN(stock)) {
+            console.error("Error. El campo stock es invalido.");
             return;
         }
-
-        if (code === "") {
-            console.error("Error. El campo codigo identificador no tiene informacion.");
+        
+        if (!this.#soloNumYletras(code)) {
+            console.error("Error. El campo codigo identificador es invalido.");
             return;
         }
 
@@ -73,16 +77,16 @@ class ProductManager {
             return;
         }
 
-        this.#products.push(producto);
+        this.#products.push(product);
     }   
 }
 
 // Testing de la clase
-const manejadorDeProductos = new ManagerProductos();
-manejadorDeProductos.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
+const manejadorDeProductos = new ProductManager();
 console.log(manejadorDeProductos.getProducts());
 manejadorDeProductos.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
-console.log(manejadorDeProductos.getProducts());  // error porque el código esta repetido
+console.log(manejadorDeProductos.getProducts());
+manejadorDeProductos.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);  // error porque el código esta repetido
 console.log(manejadorDeProductos.getProductById(1));
 console.log(manejadorDeProductos.getProductById(2));  // error porque no encuentra el producto
 
