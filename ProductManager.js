@@ -1,12 +1,34 @@
 class ProductManager {
 
     #products
+    static #ultimoIdEvento = 1
+
     constructor() {
         this.#products = [];
     };
 
+     getProducts = () => {
+        return this.#products;
+    }
+
+    #getNuevoId() {
+        const id = ProductManager.#ultimoIdEvento
+        ProductManager.#ultimoIdEvento++
+        return id
+    }
+    
+    getProductById = (id) => {
+        const codeIndex = this.#products.findIndex(e => e.id === id);
+        if (codeIndex === -1) {
+            return (`Producto con ID: ${id} Not Found`);
+        } else {
+            return this.#products[codeIndex];
+        }
+    }
+
     addProduct = (title, description, price, thumbnail, code, stock) => {
         const producto = {
+            id: this.#getNuevoId(),
             title,
             description,
             price,
@@ -14,8 +36,8 @@ class ProductManager {
             code,
             stock
         }
-
-        const prod = getProducts();
+        
+        const prod = getProducts()
         if (prod.length === 0) {
             producto.id = 1;
         } else {
@@ -59,33 +81,17 @@ class ProductManager {
         }
 
         prod.push(producto);
-    }
-
-    getProducts = () => {
-        return products;
-    }
-
-    getProductById = (id) => {
-        const codeIndex = products.findIndex(e => e.id === id);
-        if (codeIndex === -1) {
-            return (`Producto con ID: ${id} Not Found`);
-        } else {
-            return products[codeIndex];
-        }
-    }
+    }   
 }
 
+// Testing de la clase
 const manejadorDeProductos = new ManagerProductos();
-const prod = getProducts();
-prod.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
-prod = getProducts();
-console.log(prod);
-prod.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
-console.log(prod);  // error porque el código esta repetido
-const producto = getProductById(1);
-console.log(producto);
-producto = getProductById(2); 
-console.log(producto);  // error porque no encuentra el producto
+manejadorDeProductos.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
+console.log(manejadorDeProductos.getProducts());
+manejadorDeProductos.addProduct("producto prueba","Este es un producto prueba", 200, "Sin Imagen", "abc123", 25);
+console.log(manejadorDeProductos.getProducts());  // error porque el código esta repetido
+console.log(manejadorDeProductos.getProductById(1));
+console.log(manejadorDeProductos.getProductById(2));  // error porque no encuentra el producto
 
 
 
