@@ -36,14 +36,7 @@ class ProductManager {
             code,
             stock
         }
-        
-        const prod = getProducts()
-        if (prod.length === 0) {
-            producto.id = 1;
-        } else {
-            producto.id = prod[prod.length - 1].id + 1;
-        }
-
+              
         if (title === "") {
             console.error("Error. El campo titulo no tiene informacion.");
             return;
@@ -74,13 +67,13 @@ class ProductManager {
             return;
         }
 
-        const codeIndex = prod.findIndex(e => e.code === code);
+        const codeIndex = this.#products.findIndex(e => e.code === code);
         if (codeIndex !== -1) {
             console.error("Codigo ya existente");
             return;
         }
 
-        prod.push(producto);
+        this.#products.push(producto);
     }   
 }
 
